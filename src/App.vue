@@ -1,9 +1,8 @@
 <template>
   <h1>Create tables</h1>
-  <div v-if="!$store.state.tableIsSet" class="seats">
-    <set-tables></set-tables>
-    <set-seats></set-seats>
-  </div>
+  
+  <set-tables v-if="!$store.state.tableIsSet"></set-tables>
+
 
   <table-list></table-list>
 
@@ -12,60 +11,13 @@
 
 <script>
 import setTables from './components/set-tables.vue'
-import setSeats from './components/set-seats.vue'
 import tableList from './components/table-list.vue'
 
 export default {
   name: "App",
   components: {
     setTables,
-    setSeats,
     tableList,
-  },
-  data() {
-    return {
-      tableCount: null,
-      tableIsSet: false,
-      showDetail: false,
-      seats: [],
-      bookingId: null,
-      bookingDetail: {
-        seats: null,
-        name: null,
-        phone: null,
-        time: null,
-      },
-
-      bookingDetails: [],
-    };
-  },
-  methods: {
-    setTable(){
-      this.tableIsSet = true;
-    },
-    openModal(index){
-      this.bookingId = index;
-      if (!this.bookingDetails[index]) {
-        this.bookingDetails = {
-          seats: null,
-          name: null,
-          phone: null,
-          time: null,
-        };
-      } else {
-        this.bookingDetail = Object.assign({}, this.bookingDetails[index]);
-      }
-    },
-    bookingDone(){
-      this.bookingDetails[this.bookingId] = Object.assign({}, this.bookingDetail);
-      this.bookingId = null;
-      this.bookingDetail =  [];
-    },
-    cancelBooking(){
-      this.bookingId = null;
-      this.bookingDetail =  [];
-    }
-    
   },
 };
 </script>

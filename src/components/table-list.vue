@@ -2,19 +2,20 @@
   <div class="table-list" v-if="$store.state.tableIsSet">
     <ul>
       <li v-for="(seat, index) in $store.state.seats" :key="index" @dblclick="openModal(index)">
-        <template v-if="!$store.state.bookingDetails[index]">
-          <p>0 / {{ seat }}</p>
+        <template v-if="!bookingDetails[index]">
+          <p>0 / {{ $store.state.seats[index] }}</p>
         </template>
-        <template v-if="$store.state.bookingDetails[index]">
-          <p>{{ $store.state.bookingDetails[index].seats }} / {{ seat }}</p>
-          <p>{{ $store.state.bookingDetails[index].name }} 先生/小姐</p>
-          <p>{{ $store.state.bookingDetails[index].time }}</p>
+        <template v-if="bookingDetails[index]">
+          <p>{{ bookingDetails[index].name }} 先生/小姐</p>
+          <p>{{ bookingDetails[index].phone }} </p>
+          <p>{{ bookingDetails[index].seats }} / {{ seat }}</p>
+          <p>{{ bookingDetails[index].time }}</p>
         </template>
         
       </li>
     </ul>
 
-    <booking-modal></booking-modal>
+    <booking-modal :bookingId="bookingId" :bookingDetail="bookingDetails"></booking-modal>
   </div>
 </template>
 
@@ -25,13 +26,26 @@ export default {
   name: 'table-list',
   props: {
   },
+  data() {
+    return {
+      bookingId: null,
+      bookingDetail: {
+        seats: null,
+        name: null,
+        phone: null,
+        time: null,
+      },
+      bookingDetails: {
+      },
+    };
+  },
   components: {
     bookingModal,
   },
   methods: {
     openModal(index) {
-      this.$store.commit('recBookingId', index);
-      this.$store.commit('openModal', index);
+      this.bookingId = index;
+      // this.$store.commit('openModal', index);
     },
   }
 }

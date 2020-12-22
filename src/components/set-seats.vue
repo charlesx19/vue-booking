@@ -1,8 +1,8 @@
 <template>
-  <div v-if="$store.state.tableCount" class="title">
+  <div v-if="tableCount" class="title">
     Seats:
     <ul>
-      <li v-for="(n, index) in $store.state.tableCount" :key="index">
+      <li v-for="(n, index) in tableCount" :key="index">
         <div>{{ n }}/ &nbsp;</div>
         <input type="number" v-model="$store.state.seats[n-1]">
       </li>
@@ -15,8 +15,11 @@
 <script>
 export default {
   name: 'set-seats',
-  props: {
-
+  props: ['tableCount'],
+  data() {
+    return {
+      
+    };
   },
   methods: {
     setTable(){

@@ -2,19 +2,19 @@ import { createStore } from 'vuex'
 
 export default createStore({
   state: {
-    tableCount: null,
+    // tableCount: null,
     tableIsSet: false,
-    showDetail: false,
+    // showDetail: false,
     seats: [],
-    bookingId: null,
+    // bookingId: null,
 
-    bookingDetail: {
-      seats: null,
-      name: null,
-      phone: null,
-      time: null,
-    },
-    bookingDetails: [],
+    // bookingDetail: {
+    //   seats: null,
+    //   name: null,
+    //   phone: null,
+    //   time: null,
+    // },
+    // bookingDetails: [],
   },
   mutations: {
     setTable(state){
