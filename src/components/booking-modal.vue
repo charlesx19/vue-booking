@@ -1,16 +1,16 @@
 <template>
-  <div v-if="bookingId!=null" class="booking-detail">
+  <div v-if="$store.state.bookingId!=null" class="booking-detail">
     <form action="#">
       <label for="number">人數</label>
-      <input type="number" id="number" v-model="bookingDetail.seats">
+      <input type="number" id="number" v-model="$store.state.bookingDetail.seats">
       <label for="name">姓名</label>
-      <input type="text" id="name" v-model="bookingDetail.name">
+      <input type="text" id="name" v-model="$store.state.bookingDetail.name">
       <label for="phone">電話</label>
-      <input type="text" id="phone" v-model="bookingDetail.phone">
+      <input type="text" id="phone" v-model="$store.state.bookingDetail.phone">
       <label for="time">時間</label>
-      <input type="text" id="time" v-model="bookingDetail.time">
+      <input type="text" id="time" v-model="$store.state.bookingDetail.time">
     </form>
-    <button @click="bookingDone(index)">Booking</button>
+    <button @click="bookingDone()">Booking</button>
     <button class="close" @click="cancelBooking()">X</button>
   </div>
 </template>
@@ -19,8 +19,22 @@
 export default {
   name: 'booking-modal',
   props: {
+  },
+  data(){
+    return {
+    };
+  },
+  methods: {
+    bookingDone() {
 
-  }
+      this.$store.commit('bookingDone');
+      
+      this.cancelBooking();
+    },
+    cancelBooking(){
+      this.$store.commit('cancelBooking');
+    },
+  },
 }
 </script>
 
