@@ -1,64 +1,26 @@
 <template>
   <h1>Create tables</h1>
-  <div v-if="!tableIsSet" class="seats">
-    <div class="table-count">
-      <div class="title">Table Count:</div>
-      <input type="number" v-model.number="tableCount" />
-    </div>
-    <div v-if="tableCount" class="title">
-      Seats:
-      <ul>
-        <li v-for="(n, index) in tableCount" :key="index">
-          <div>{{ n }}/ &nbsp;</div>
-          <input type="number" v-model="seats[n-1]">
-        </li>
-      </ul>
-    <button @click="setTable">Create seats</button>
-
-    </div>
+  <div v-if="!$store.state.tableIsSet" class="seats">
+    <set-tables></set-tables>
+    <set-seats></set-seats>
   </div>
 
-  <div class="table-list" v-if="tableIsSet">
-    <ul>
-      <li v-for="(seat, index) in seats" :key="index" @dblclick="openModal(index)">
-        <template v-if="!this.bookingDetails[index]">
-          <p>0 / {{ seat }}</p>
-        </template>
-        <template v-if="this.bookingDetails[index]">
-          <p>{{ this.bookingDetails[index].seats }} / {{ seat }}</p>
-          <p>{{ this.bookingDetails[index].name }} 先生/小姐</p>
-          <p>{{ this.bookingDetails[index].time }}</p>
-        </template>
-        
-      </li>
-    </ul>
-
-    <div v-if="bookingId!=null" class="booking-detail">
-      <form action="#">
-        <label for="number">人數</label>
-        <input type="number" id="number" v-model="bookingDetail.seats">
-        <label for="name">姓名</label>
-        <input type="text" id="name" v-model="bookingDetail.name">
-        <label for="phone">電話</label>
-        <input type="text" id="phone" v-model="bookingDetail.phone">
-        <label for="time">時間</label>
-        <input type="text" id="time" v-model="bookingDetail.time">
-      </form>
-      <button @click="bookingDone(index)">Booking</button>
-      <button class="close" @click="cancelBooking()">X</button>
-    </div>
-  </div>
+  <table-list></table-list>
 
   
 </template>
 
 <script>
-// import HelloWorld from './components/HelloWorld.vue'
+import setTables from './components/set-tables.vue'
+import setSeats from './components/set-seats.vue'
+import tableList from './components/table-list.vue'
 
 export default {
   name: "App",
   components: {
-    // HelloWorld
+    setTables,
+    setSeats,
+    tableList,
   },
   data() {
     return {
