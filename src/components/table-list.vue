@@ -7,15 +7,15 @@
         </template>
         <template v-if="bookingDetails[index]">
           <p>{{ bookingDetails[index].name }} 先生/小姐</p>
-          <p>{{ bookingDetails[index].phone }} </p>
-          <p>{{ bookingDetails[index].seats }} / {{ seat }}</p>
-          <p>{{ bookingDetails[index].time }}</p>
+          <p>電話 {{ bookingDetails[index].phone }} </p>
+          <p>{{ bookingDetails[index].seats }} / {{ seat }} 位</p>
+          <p>時間 {{ bookingDetails[index].time }}</p>
         </template>
         
       </li>
     </ul>
 
-    <booking-modal :bookingId="bookingId" :bookingDetail="bookingDetails"></booking-modal>
+    <booking-modal :bookingId="bookingId" :bookingDetail="bookingDetails" @closeModal="bookingId = null" @bookingDone="bookingDone"></booking-modal>
   </div>
 </template>
 
@@ -45,7 +45,23 @@ export default {
   methods: {
     openModal(index) {
       this.bookingId = index;
-      // this.$store.commit('openModal', index);
+
+      if (!this.bookingDetails[this.bookingId]) {
+        this.bookingDetails[this.bookingId] = {
+          seats: 0,
+          name: null,
+          phone: null,
+          time: null,
+        };
+      }
+    },
+    bookingDone(bookingInfo) {
+      if (((bookingInfo.seats) && (bookingInfo.name) && (bookingInfo.phone) && (bookingInfo.time))) {
+        this.bookingDetails[this.bookingId] = Object.assign({}, bookingInfo);
+      }
+
+      console.log(Boolean(bookingInfo.seats && bookingInfo.name && bookingInfo.phone && bookingInfo.time));
+      this.bookingId = null;
     },
   }
 }

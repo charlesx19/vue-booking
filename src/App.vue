@@ -61,6 +61,7 @@ h1 {
     li {
       display: flex;
       flex-direction: column;
+      align-items: start;
       padding: 30px;
       margin: 0 10px;
       border: 1px solid #000;
