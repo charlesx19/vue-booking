@@ -47,6 +47,9 @@ export default createStore({
         time: null,
       };
     },
+    // deleteItem(state, index) {
+    //   state.seats.splice(index, 1);
+    // },
   },
   actions: {
   },
