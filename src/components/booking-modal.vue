@@ -14,10 +14,9 @@
       <button class="close" @click="$emit('closeModal')">X</button>
     </form> -->
     
-
     <form action="#" v-if="editMode" class="inputForm">
       <label for="number">人數</label>
-      <input type="number" id="number" v-model="bookingInfo.seats" required>
+      <input type="number" class="" v-model="bookingInfo.seats" required>
       <label for="name">姓名</label>
       <input type="text" id="name"  v-model="bookingInfo.name" required>
       <label for="phone">電話</label>
@@ -29,13 +28,24 @@
     </form>
   </div>
 
+  <div v-if="addTableModal" class="booking-detail">
+   <form action="#" class="inputForm">
+     
+      <label for="number">此桌座位數</label>
+      <input type="number" class="" v-model="seats">
+     
+      <button @click="$emit('addTableDone', bookingInfoForAdd); addTableDone()">Create Table</button>
+      <button class="close" @click="$emit('closeModal'); closeModal()">X</button>
+    </form>
+  </div>
+
 </template>
 
 <script>
 export default {
   name: 'booking-modal',
-  props: ['bookingId', 'bookingDetail', 'editMode'],
-  emits:['bookingDone', 'closeModal'],
+  props: ['bookingId', 'bookingDetail', 'editMode', 'addTableModal'],
+  emits:['bookingDone', 'closeModal', 'addTableDone'],
   data(){
     return {
       bookingInfo: {
@@ -44,6 +54,13 @@ export default {
         phone: null,
         time: null,
       },
+      bookingInfoForAdd: {
+        seats: null,
+        name: null,
+        phone: null,
+        time: null,
+      },
+      seats: null,
     };
   },
   methods: {
@@ -62,9 +79,30 @@ export default {
 
       // console.log(this.bookingDetail[this.bookingId].seats);
     },
+    addTableDone() {
+      if (this.seats>0) {
+        this.$store.commit('addTable', this.seats);
+        this.bookingInfoForAdd = {
+          seats: null,
+          name: null,
+          phone: null,
+          time: null,
+        };
+        this.seats = null;
+      } else {
+          alert('座位數不可為0或以下')
+        }
+      
+    },
     closeModal() {
 
       this.bookingInfo = {
+        seats: null,
+        name: null,
+        phone: null,
+        time: null,
+      };
+      this.bookingInfoForAdd = {
         seats: null,
         name: null,
         phone: null,
@@ -108,9 +146,17 @@ export default {
       * {
         text-align: left;
       }
+      label {
+        padding: 0 10px;
+      }
+      input {
+        padding: 0 10px;
+        border: none;
+      }
     }
     button {
       margin-top: 10px;
+      text-align: center;
     }
     .close {
       position: absolute;

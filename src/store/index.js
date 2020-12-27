@@ -8,12 +8,7 @@ export default createStore({
     seats: [],
     // bookingId: null,
 
-    // bookingDetail: {
-    //   seats: null,
-    //   name: null,
-    //   phone: null,
-    //   time: null,
-    // },
+    // bookingDetail: {},
     // bookingDetails: [],
   },
   mutations: {
@@ -47,9 +42,12 @@ export default createStore({
         time: null,
       };
     },
-    // deleteItem(state, index) {
-    //   state.seats.splice(index, 1);
-    // },
+    addTable(state, data) {
+      state.seats[state.seats.length] = data;
+    },
+    deleteItem(state, index) {
+      state.seats.splice(index, 1);
+    },
   },
   actions: {
   },

@@ -24,7 +24,9 @@ export default {
   methods: {
     setTable(){
       this.$store.commit('setTable');
+      // console.log(this.$store.state.bookingDetail);
     },
+    
   },
     
 }

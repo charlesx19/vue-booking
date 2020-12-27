@@ -20,11 +20,13 @@
             </ul>
           </template>
           <button class="resetItem" @click="resetItem(index)">Reset</button>
-        </div>  
+          <!-- <button class="deleteItem" @click="deleteItem(index)">delete</button> -->
+        </div>
       </li>
+      <li class="table-list-item"><div class="table-list-info add-table" @click="addTable">+</div></li>
     </ul>
 
-    <booking-modal :bookingId="bookingId" :bookingDetail="bookingDetails" :editMode="editMode" @closeModal="bookingId = null" @bookingDone="bookingDone"></booking-modal>
+    <booking-modal :bookingId="bookingId" :bookingDetail="bookingDetails" :editMode="editMode" :addTableModal="addTableModal" @closeModal="closeModal" @bookingDone="bookingDone" @addTableDone="addTableDone"></booking-modal>
   </div>
 </template>
 
@@ -39,15 +41,16 @@ export default {
     return {
       bookingId: null,
       bookingDetail: {
-        id: null,
         seats: null,
         name: null,
         phone: null,
         time: null,
       },
       bookingDetails: {
+      
       },
       editMode: false,
+      addTableModal: false,
     };
   },
   components: {
@@ -67,6 +70,10 @@ export default {
         };
       }
     },
+    closeModal() {
+      this.bookingId = null;
+      this.addTableModal = false;
+    },
     bookingDone(bookingInfo) {
       if (((bookingInfo.seats) && (bookingInfo.name) && (bookingInfo.phone) && (bookingInfo.time))) {
         this.bookingDetails[this.bookingId] = Object.assign({}, bookingInfo);
@@ -76,6 +83,12 @@ export default {
 
       // console.log(Boolean(bookingInfo.seats && bookingInfo.name && bookingInfo.phone && bookingInfo.time));
     },
+    addTableDone(bookingInfoForAdd) {
+          this.bookingDetails[this.bookingDetails.length+1] = Object.assign({}, bookingInfoForAdd);
+          this.bookingId = null;
+          this.addTableModal = false;
+        
+    },
     enterEditMode() {
       this.editMode = true;
     },
@@ -83,10 +96,19 @@ export default {
      let result = confirm('Reset this booking?');
      if (result) {
        delete this.bookingDetails[index];
-      //  this.$store.commit('deleteItem', index);
      }
     },
-  }
+    deleteItem(index) {
+      let result = confirm('Delete this booking?');
+      if (result) {
+        delete this.bookingDetails[index];
+        this.$store.commit('deleteItem', index);
+      }
+    },
+    addTable() {
+      this.addTableModal = true;
+    },
+  },
 }
 </script>
 
@@ -106,6 +128,7 @@ export default {
         position: relative;
         display: flex;
         width: 25%;
+        min-width: 25%;
         flex-direction: column;
         justify-content: center;
         align-items: center;
@@ -116,8 +139,17 @@ export default {
         border-radius: 5px;
         .table-list-info {
           width: 100%;
+          height: 174px;
           padding: 30px;
           border: 1px solid #000;
+          cursor: pointer;
+          &.add-table {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 48px;
+            color: #555;
+          }
         }
       }
     }
@@ -136,6 +168,22 @@ export default {
       outline: none;
     }
   }
+
+  .deleteItem {
+    position: absolute;
+    right: 60px;
+    top: 10px;
+    padding: 5px 5px;
+    font-size: 12px;
+    border: none;
+    background: #eee;
+    color: #555;
+    cursor: pointer;
+    &:focus {
+      outline: none;
+    }
+  }
+  
   .bookingInfo {
     display: flex;
     flex-direction: column;
